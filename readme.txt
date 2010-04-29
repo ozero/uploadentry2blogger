@@ -1,9 +1,8 @@
 
-based on zend_gdata demo : Blogger.php
-under developing. still yet not works.
+- do not commit your settings.yaml
 
-
-pls chk "treat line-break as <br>" on you blogger.com cpl.
-
+- based on zend_gdata demo : Blogger.php
+- under developing. still yet not works.
+- pls turn on "treat line-break as <br>" on you blogger.com cpl.
 
 
