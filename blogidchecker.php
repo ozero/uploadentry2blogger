@@ -7,7 +7,9 @@ Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
 require_once 'SimpleCRUD.class.php';
 require_once 'Spyc.class.php';
 
-$settings = Spyc::YAMLLoad('settings.yaml');
+$baseset=Spyc::YAMLLoad('settings.yaml');
+$settings = Spyc::YAMLLoad($baseset['blogacc']);
+
 //
 if (($settings['user'] == null) || ($settings['pass'] == null)) {
     exit("configure setting.yaml to set your blogger id and password, first.\n");

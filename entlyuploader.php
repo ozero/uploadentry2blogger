@@ -8,7 +8,8 @@ require_once 'SimpleCRUD.class.php';
 require_once 'Spyc.class.php';
 
 //init
-$settings = Spyc::YAMLLoad('settings.yaml');
+$baseset=Spyc::YAMLLoad('settings.yaml');
+$settings = Spyc::YAMLLoad($baseset['blogacc']);
 if (($settings['user'] == null) || ($settings['pass'] == null)) {
     exit("configure setting.yaml to set your blogger id and password, first.\n");
 }
@@ -21,16 +22,21 @@ if ($settings['maxuploadperday'] == null) {
 $_obj_sc = new SimpleCRUD($settings['user'], $settings['pass']);
 $_obj_sc->blogID = $settings['blogid'];
 
-exit;
 
-
-$files = glob("./html/*.html");
+$files = glob($baseset['htmldir'].'/*.html');
 foreach($files as $k0=>$v0){
 	if($k0 > $settings['maxuploadperday']){continue;}
 	print "upload: {$v0}\n";
-	
+	$postID = upload($_obj_sc,$v0);
+	print "done.\n";
+	//rename($v0,$v0.".uploaded_".$postID);
+}
+
+
+
+function upload(&$blogobj,$path){
 	//load
-	$htmlcontent=join('',file($v0));
+	$htmlcontent=join('',file($path));
 	
 	//extract metadata
 	//<!-- title:my memorial entry -->
@@ -47,7 +53,8 @@ foreach($files as $k0=>$v0){
 	    'entrycontent'=>join("\n",$htmlcontent),
 	    'is_draft'=>true
 	);
-	$postID = $_obj_sc->createPost($arg);
+	print_r($arg);
+	//$postID = $blogobj->createPost($arg);
 	
 	//add date to the post
 	$entrydate=$matches[1]."T09:0".substr(microtime(),3,1).":00+09:00";
@@ -57,8 +64,7 @@ foreach($files as $k0=>$v0){
 	    'date_updated'=>$entrydate,
 	    'is_draft'=>false
 	);
-	$updatedPost = $_obj_sc->updatePost($arg);
-	print "done.\n";
+	print_r($arg);
+	//$updatedPost = $blogobj->updatePost($arg);
+	return $postID;
 }
-
-

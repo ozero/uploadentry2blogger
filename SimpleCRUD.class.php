@@ -51,16 +51,16 @@ class SimpleCRUD
      */
     public function promptForBlogID()
     {
-        print "Your blogs in bloggers.com. Type number to show their blogIDs.\n";
+        print "List of your blogs in bloggers.com. Type number to show their blogIDs.\n";
         
         $query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
         $feed = $this->gdClient->getFeed($query);
         $this->printFeed($feed);
-        $input = getInput("\nNumber:");
+        $input = getInput("\nNumber");
 
         //id text is of the form: tag:blogger.com,1999:user-blogID.blogs
         $idText = explode('-', $feed->entries[$input]->id->text);
-        print "Your blogID is:\n{$idText[2]}\n\nWrite this value in setting.yaml.\n";
+        print "Your blogID is:\n{$idText[2]}\n\nWrite this value in yaml with user/pass.\n";
         $this->blogID = $idText[2];
     }
 
