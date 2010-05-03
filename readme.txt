@@ -1,3 +1,5 @@
+* Push your old diary html files into blogger.com.
+* Treats 1 html file as 1 entry.
 
 - 1) edit setting.yaml
 -- [blogacc] where would you like to place Blogger.com account info file.
@@ -19,5 +21,5 @@
 
 -etc:
 -- based on zend_gdata demo : Blogger.php
--- under developing. still yet not works.
+-- under developing.
 -- pls turn on "treat line-break as <br>" on you blogger.com cpl.
