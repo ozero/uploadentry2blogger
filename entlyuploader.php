@@ -22,19 +22,23 @@ if ($settings['maxuploadperday'] == null) {
 $_obj_sc = new SimpleCRUD($settings['user'], $settings['pass']);
 $_obj_sc->blogID = $settings['blogid'];
 
+
 //upload
 $files = glob($baseset['htmldir'].'/*.html');
 foreach($files as $k0=>$v0){
-	if($k0 > $settings['maxuploadperday']){continue;}
+	if($k0 >= $settings['maxuploadperday']){continue;}
 	print "upload: {$v0}\n";
-	$postID = upload($_obj_sc,$v0);
-	print "done.\n";
-	rename($v0,$v0.".uploaded_".$postID);
+	$postID = upload($_obj_sc,$v0,$baseset);
+	if($baseset['testmode'] != 0){
+	}else{
+		rename($v0,$v0.".uploaded_".$postID);
+	}
+	print "done.\n-----------------------------\n";
 }
 
 
 
-function upload(&$blogobj,$path){
+function upload(&$blogobj,$path,$baseset){
 	//load
 	$htmlcontent=join('',file($path));
 	
@@ -53,9 +57,12 @@ function upload(&$blogobj,$path){
 	    'entrycontent'=>$htmlcontent,
 	    'is_draft'=>true
 	);
-	//print_r($arg);
-	$postID = $blogobj->createPost($arg);
-	
+	if($baseset['testmode'] != 0){
+		print_r($arg);
+	}else{
+		$postID = $blogobj->createPost($arg);
+	}
+
 	//add date to the post
 	$arg=array(
 		'post_id'=>$postID,
@@ -63,7 +70,10 @@ function upload(&$blogobj,$path){
 	    'date_updated'=>$entrydate,
 	    'is_draft'=>false
 	);
-	//print_r($arg);
-	$updatedPost = $blogobj->updatePost($arg);
+	if($baseset['testmode'] != 0){
+		print_r($arg);
+	}else{
+		$updatedPost = $blogobj->updatePost($arg);
+	}
 	return $postID;
 }

@@ -1,2 +1,3 @@
 blogacc: ../blogaccount.yaml
 htmldir: ../html
+testmode: 0 #1[testmode] or 0[execute]
