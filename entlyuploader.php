@@ -31,7 +31,9 @@ foreach($files as $k0=>$v0){
 	$postID = upload($_obj_sc,$v0,$baseset);
 	if($baseset['testmode'] != 0){
 	}else{
-		rename($v0,$v0.".uploaded_".$postID);
+		$newfilename=$v0.".uploaded_{$postID}_".date('Ymd-His');
+		rename($v0,$newfilename);
+		chmod($newfilename,0666);
 	}
 	print "done.\n-----------------------------\n";
 }
